@@ -92,6 +92,8 @@ class Config:  # pylint: disable=too-few-public-methods
     PUBLISHER_AUDIENCE = os.getenv(
         "PUBLISHER_AUDIENCE", "https://pubsub.googleapis.com/google.pubsub.v1.Publisher"
     )
+    # SUB_AUDIENCE = os.getenv("SUB_AUDIENCE", "")
+    # SUB_SERVICE_ACCOUNT = os.getenv("SUB_SERVICE_ACCOUNT", "")
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
