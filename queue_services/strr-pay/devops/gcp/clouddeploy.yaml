@@ -18,6 +18,7 @@ serialPipeline:
       container-name: "strr-pay-dev"
       cloudsql-instances: "bcrbk9-dev:northamerica-northeast1:strr-db-dev"
       service-account: "sa-api@bcrbk9-dev.iam.gserviceaccount.com"
+      
  - targetId: bcrbk9-test
    profiles: [test]
    strategy:
