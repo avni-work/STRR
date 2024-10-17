@@ -6,7 +6,23 @@
           {{ t('createAccount.propertyForm.subtitle') }}
         </p>
       </div>
+
       <UForm ref="form" :schema="propertyDetailsSchema" :state="formState.propertyDetails">
+
+       <BcrosFormSectionPropertyDetails
+          v-model:property-type="formState.propertyDetails.propertyType"
+          v-model:ownership-type="formState.propertyDetails.ownershipType"
+          v-model:business-license="formState.propertyDetails.businessLicense"
+          v-model:parcel-identifier="formState.propertyDetails.parcelIdentifier"
+          :property-types="propertyTypes"
+          :ownership-types="ownershipTypes"
+          :ownership-type-error="ownershipTypeError"
+          :property-type-error="propertyTypeError"
+          @validate-ownership="validateOwnershipType"
+          @validate-property="validatePropertyType"
+        />
+
+        <!-- Rental Unit Address Section -->
         <BcrosFormSectionPropertyAddress
           id="propertyAddress"
           v-model:nickname="formState.propertyDetails.nickname"
@@ -25,14 +41,12 @@
           v-model:ownership-type="formState.propertyDetails.ownershipType"
           v-model:business-license="formState.propertyDetails.businessLicense"
           v-model:parcel-identifier="formState.propertyDetails.parcelIdentifier"
-          v-model:business-license-expiry-date="formState.propertyDetails.businessLicenseExpiryDate"
           :property-types="propertyTypes"
           :ownership-types="ownershipTypes"
           :ownership-type-error="ownershipTypeError"
           :property-type-error="propertyTypeError"
           @validate-ownership="validateOwnershipType"
           @validate-property="validatePropertyType"
-          @validate-business-license-expiry-date="validateBusinessLicenseExpiryDate"
         />
         <BcrosFormSectionPropertyListingDetails
           v-model:listing-details="formState.propertyDetails.listingDetails"
@@ -105,15 +119,11 @@ const validateField = (index: number) => {
           message: error.message
         }
       })
-    // if validation isn't passed
     if (invalidUrl) {
       listingURLErrors.value?.length
-        // if other errors exist add this one
         ? listingURLErrors.value.push(invalidUrl[0])
-        // if no other errors this becomes the error object
         : listingURLErrors.value = invalidUrl
     } else if (listingURLErrors.value?.length === 0) {
-      // if no other errors and URL is valid replace value with undefined
       listingURLErrors.value = undefined
     } else {
       const removalIndex = listingURLErrors.value?.findIndex(nonerror => nonerror?.errorIndex === index)
@@ -161,11 +171,12 @@ const propertyTypes: string[] = [
   t('createAccount.propertyForm.multiUnitHousing'),
   t('createAccount.propertyForm.condoApartment'),
   t('createAccount.propertyForm.recreationalProperty'),
+  t('createAccount.propertyForm.bedAndBreakfast'),
   t('createAccount.propertyForm.strataHotel'),
   t('createAccount.propertyForm.floatHome')
 ]
 
-const ownershipTypes: string[] = [
+const ownershipTypes = [
   t('createAccount.propertyForm.rent'),
   t('createAccount.propertyForm.own'),
   t('createAccount.propertyForm.coOwn')
@@ -208,5 +219,4 @@ onMounted(() => {
     validateOwnershipType()
   }
 })
-
 </script>
